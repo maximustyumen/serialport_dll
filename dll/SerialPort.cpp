@@ -18,7 +18,7 @@ bool SerialPort::Open(const std::string& portName, DWORD baudRate, BYTE dataBits
         Close();
     }
 
-    std::string fullPortName = "\\\\.\\" + portName; // Для поддержки COM-портов с номерами > 9
+    std::string fullPortName = "\\\\.\\" + portName; // To support COM ports with numbers > 9
 
     m_hComPort = CreateFileA(
         fullPortName.c_str(),
@@ -54,13 +54,13 @@ bool SerialPort::Open(const std::string& portName, DWORD baudRate, BYTE dataBits
         return false;
     }
 
-    // Установка таймаутов
+    // Setting timeouts - https://learn.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-commtimeouts
     COMMTIMEOUTS timeouts = { 0 };
-    timeouts.ReadIntervalTimeout = 1;           // Макс. задержка между байтами (мс)
-    timeouts.ReadTotalTimeoutMultiplier = 0;    // Не добавлять задержку на каждый байт
-    timeouts.ReadTotalTimeoutConstant = 15;     // Общий таймаут на операцию чтения (мс)
-    timeouts.WriteTotalTimeoutMultiplier = 0;   // Для записи (не критично)
-    timeouts.WriteTotalTimeoutConstant = 50;    // Таймаут записи (мс)
+    timeouts.ReadIntervalTimeout = 1;           // Max. byte delay (ms)
+    timeouts.ReadTotalTimeoutMultiplier = 0;    // Don't add delay to each byte
+    timeouts.ReadTotalTimeoutConstant = 15;     // Total timeout for read operation (ms)
+    timeouts.WriteTotalTimeoutMultiplier = 0;   // For recording (not critical)
+    timeouts.WriteTotalTimeoutConstant = 50;    // Write timeout (ms)
     
     if (!SetCommTimeouts(m_hComPort, &timeouts)) {
         CloseHandle(m_hComPort);
@@ -120,7 +120,7 @@ void SerialPort::Flush() {
 std::vector<std::string> SerialPort::GetAvailablePorts() {
     std::vector<std::string> ports;
 
-    // Проверка стандартных COM-портов (1-256)
+    // Checking standard COM ports (1-256)
     for (int i = 1; i <= 256; ++i) {
         std::string portName = "COM" + std::to_string(i);
         HANDLE hPort = CreateFileA(
@@ -138,7 +138,7 @@ std::vector<std::string> SerialPort::GetAvailablePorts() {
         }
     }
 
-    /* Дополнительный поиск через SetupAPI для более точного списка
+    /* Additional search via SetupAPI for a more accurate list
     HDEVINFO hDevInfo = SetupDiGetClassDevs(&GUID_DEVCLASS_PORTS, NULL, NULL, DIGCF_PRESENT);
     if (hDevInfo != INVALID_HANDLE_VALUE) {
         SP_DEVINFO_DATA devInfoData;
@@ -173,7 +173,7 @@ std::vector<std::string> SerialPort::GetAvailablePorts() {
         SetupDiDestroyDeviceInfoList(hDevInfo);
     }*/
 
-    // Сортировка портов по номеру
+    // Sort ports by number
     std::sort(ports.begin(), ports.end(), [](const std::string& a, const std::string& b) {
         int numA = atoi(a.substr(3).c_str());
         int numB = atoi(b.substr(3).c_str());
@@ -183,7 +183,7 @@ std::vector<std::string> SerialPort::GetAvailablePorts() {
     return ports;
 }
 
-// Реализация C-стиля экспорта функций
+// Implementing C-style function exports
 SERIALPORT_API void* CreateSerialPort() {
     return new SerialPort();
 }

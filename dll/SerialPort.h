@@ -30,7 +30,7 @@ private:
     bool m_isOpen;
 };
 
-// C-стиль экспорта функций для совместимости
+// C-style function export for compatibility
 extern "C" {
     SERIALPORT_API void* CreateSerialPort();
     SERIALPORT_API void DestroySerialPort(void* port);
@@ -40,7 +40,7 @@ extern "C" {
     SERIALPORT_API int ReadData(void* port, char* buffer, int bufferSize);
     SERIALPORT_API int IsPortOpen(void* port);
 
-    // Функции для работы со списком портов
+    // Functions for working with a list of ports
     SERIALPORT_API int GetPortsCount();
     SERIALPORT_API bool GetPortName(int index, char* buffer, int bufferSize);
 }

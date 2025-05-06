@@ -13,6 +13,9 @@ Build instructions:
 - Click Apply
 4. Build the project
 
+Some usage tips:
+1. Set the values ​​in the COMMTIMEOUTS structure correctly for your data transfer rates.
+
 Using example (C++)
 ```
 #include <iostream>

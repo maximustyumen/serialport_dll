@@ -2,7 +2,7 @@
 С++ DLL code for integrate functional to communicate (read, write, service) with serial port
 
 Checked for:
-- Unity (06.05.2025)
+- Unity 2021.3.36f1 (06.05.2025)
 
 Build instructions:
 1. Create a DLL project in your development environment (Visual Studio, etc.)
@@ -43,7 +43,7 @@ int main() {
     return 0;
 }
 ```
-Using exaple C#
+Using example C#
 ```
 using System;
 using System.Runtime.InteropServices;

@@ -1,0 +1,11 @@
+LIBRARY SerialPort
+EXPORTS
+    CreateSerialPort
+    DestroySerialPort
+    OpenPort
+    ClosePort
+    WriteData
+    ReadData
+    IsPortOpen
+    GetPortsCount
+    GetPortName
